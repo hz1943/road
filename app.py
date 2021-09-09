@@ -91,7 +91,7 @@ def pciGroup():
         laneWidth = eval(oneJson['laneWidth'])
         tag_list = oneJson['roadDamageList']
         distype = eval(oneJson['type'])
-        pci = calculate_pci_last(tag_list, laneWidth, distype, flask.request.json)
+        pci = calculate_pci_last(tag_list, laneWidth, distype, oneJson)
         oneRet = {}
         oneRet['startStake'] = startStake
         oneRet['pci'] = pci
