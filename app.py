@@ -121,7 +121,7 @@ def save_image_and_tag(images):
         db.session.execute(
             "insert into tbl_road_damage_filter(id,frame_number,file_id,damage_video,damage_img_url,"
             "discovery_time,device_sn,longitude,latitude,stake_no) "
-            "values('%s','%s','%s','%s','%s','%s','%s','%s','%s')" % (
+            "values('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')" % (
                 convertNone(str(image['id'])), convertNone(str(image['frame_number'])),
                 convertNone(str(image['file_id'])), convertNone(str(image['damage_video'])), convertNone(str(image['damage_img_url'])),
                 convertNone(str(image['discovery_time'])), convertNone(str(image['device_sn'])), convertNone(str(image['longitude'])),
