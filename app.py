@@ -120,12 +120,12 @@ def save_image_and_tag(images):
     for image in images:
         db.session.execute(
             "insert into tbl_road_damage_filter(id,frame_number,file_id,damage_video,damage_img_url,"
-            "discovery_time,device_sn,longitude,latitude) "
+            "discovery_time,device_sn,longitude,latitude,stake_no) "
             "values('%s','%s','%s','%s','%s','%s','%s','%s','%s')" % (
                 convertNone(str(image['id'])), convertNone(str(image['frame_number'])),
                 convertNone(str(image['file_id'])), convertNone(str(image['damage_video'])), convertNone(str(image['damage_img_url'])),
                 convertNone(str(image['discovery_time'])), convertNone(str(image['device_sn'])), convertNone(str(image['longitude'])),
-                convertNone(str(image['latitude'])))
+                convertNone(str(image['latitude'])), convertNone(str(image['stake_no'])))
         )
         db.session.commit()    
         for tag in image['tags']:
@@ -210,6 +210,14 @@ def process():
     pci_params = fetch_to_dict(db, 'select lane_width,lane_high_pixel,lane_pixel_len,angle_left,angle_right from road_detection_record where id=:id',  {'id':record_id}, 'one')
 
     images = fetch_to_dict(db, ' select * from tbl_road_damage where file_id=:file_id', {'file_id':file_id})
+
+    if images == None:
+        msg = "Can not find file_id of : %s" % (file_id)
+        logging.info(msg)
+        ret = {}
+        ret['msg'] = msg
+        return json.dumps(ret)
+
     # 排序
     images = sorted(images, key=lambda img: img['frame_number'])
 
