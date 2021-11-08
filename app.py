@@ -17,7 +17,7 @@ import filter
 # cx处理
 app = flask.Flask(__name__, template_folder='.')
 # 格式为app.config['SQLALCHEMY_DATABASE_URI'] =  'mysql+pymysql://数据库用户:密码@127.0.0.1/数据库名称'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:zy63815635@172.16.1.203:3306/road_detection?charset=utf8'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:zy63815635@172.16.1.200:3306/road_detection?charset=utf8'
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['SQLALCHEMY_POOL_RECYCLE'] = 600
 db = SQLAlchemy(app)
@@ -120,12 +120,12 @@ def save_image_and_tag(images):
     for image in images:
         db.session.execute(
             "insert into tbl_road_damage_filter(id,frame_number,file_id,damage_video,damage_img_url,"
-            "discovery_time,device_sn,longitude,latitude,stake_no) "
+            "discovery_time,device_sn,longitude,latitude,stake_no, org_img_url) "
             "values('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')" % (
                 convertNone(str(image['id'])), convertNone(str(image['frame_number'])),
                 convertNone(str(image['file_id'])), convertNone(str(image['damage_video'])), convertNone(str(image['damage_img_url'])),
                 convertNone(str(image['discovery_time'])), convertNone(str(image['device_sn'])), convertNone(str(image['longitude'])),
-                convertNone(str(image['latitude'])), convertNone(str(image['stake_no'])))
+                convertNone(str(image['latitude'])), convertNone(str(image['stake_no'])), convertNone(str(image['org_img_url'])))
         )
         db.session.commit()    
         for tag in image['tags']:
