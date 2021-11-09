@@ -100,14 +100,30 @@ def pciGroup():
     ret['msg'] = 'ok'
     return json.dumps(ret)
     
-@app.route('/getFps', methods=['post'])
-def getFps():
+# @app.route('/getFps', methods=['post'])
+# def getFps():
+#     ret = {}
+#     logging.info(flask.request.json)
+#     videoUrl = flask.request.json['videoUrl']
+#     videoInfo, videoCapture = getVideoInfo(videoUrl)
+#     videoCapture.release()
+#     ret['data'] = videoInfo.fps
+#     ret['msg'] = 'ok'
+#     return json.dumps(ret)
+
+@app.route('/getVideoInfo', methods=['post'])
+def getVideoInfo():
     ret = {}
     logging.info(flask.request.json)
     videoUrl = flask.request.json['videoUrl']
     videoInfo, videoCapture = getVideoInfo(videoUrl)
     videoCapture.release()
-    ret['data'] = videoInfo.fps
+    data = {}
+    data['fps'] = videoInfo.fps
+    data['width'] = videoInfo.width
+    data['height'] = videoInfo.height
+    data['frameCount'] = videoInfo.frameCount
+    ret['data'] = data
     ret['msg'] = 'ok'
     return json.dumps(ret)
 
