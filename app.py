@@ -112,7 +112,7 @@ def pciGroup():
 #     return json.dumps(ret)
 
 @app.route('/getVideoInfo', methods=['post'])
-def getVideoInfo():
+def getVideoInfoApi():
     ret = {}
     logging.info(flask.request.json)
     videoUrl = flask.request.json['videoUrl']
