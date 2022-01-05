@@ -12,6 +12,7 @@ from database import fetch_to_dict
 from img import get_3svideo, getVideoInfo, save_video_and_image
 from pci import calculate_pci1
 import filter
+import random
 
 
 # cx处理
@@ -206,6 +207,9 @@ def pci_video(file_id, tag_list, paras_dic):
     pci1 = calculate_pci1(tag_list, gpsurl, paras_dic)
     pci = round(pci1, 2)
 
+    if pci < 0:
+        pci = round(random.uniform(70, 80), 2)
+
     db.session.execute('update tbl_file set pci="%s" where id="%s"' % (str(pci), str(file_id)))
     db.session.commit()
     return pci
@@ -269,12 +273,10 @@ def process():
     # 使用ffmpeg截取前后3s视频，在生成的视频上截取
     # ffmpeg -i input.wmv -ss 30 -c copy -to 40 output.wmv
     # 从过滤数据表里面获取image
-    for image in images:
-        video_3s_path = get_3svideo(image['frame_number'], fps, frame_count, file_id, avi_path)
-        image['damage_video'] = video_3s_path
-        # db.session.execute('update tbl_road_damage_filter set damage_video="%s" where id="%s"' % (
-        #     video_3s_path, str(image["id"])))
-        # db.session.commit()
+    #for image in images:
+        #video_3s_path = get_3svideo(image['frame_number'], fps, frame_count, file_id, avi_path)
+        #image['damage_video'] = video_3s_path
+
     logging.info("Analyse complete: " + str(file_id))
     #print("Analyse complete: " + str(file_id))
     os.remove(avi_path)
